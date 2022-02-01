@@ -1,0 +1,33 @@
+{
+    "name": "coral-media/framework-bundle",
+    "description": "Framework Bundle to handle core code.",
+    "license": "proprietary",
+    "authors": [
+        {
+            "name": "Rafael Ernesto Espinosa Santiesteban <@rernesto>",
+            "email": "rernesto.espinosa@gmail.com"
+        }
+    ],
+    "autoload": {
+        "psr-4": {
+            "CoralMedia\\Bundle\\FrameworkBundle\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "CoralMedia\\Bundle\\FrameworkBundle\\Test\\": "tests/"
+        }
+    },
+    "require": {
+        "php": "^7.4|^8.0",
+        "symfony/dependency-injection": "^5.4",
+        "symfony/framework-bundle":     "^5.4",
+        "symfony/config":               "^5.4",
+        "symfony/serializer":           "^5.4",
+        "coral-media/http-foundation":          "@dev",
+        "coral-media/doctrine-extensions":      "@dev"
+    },
+    "require-dev": {
+        "symfony/phpunit-bridge": "^5.3"
+    }
+}
