@@ -14,9 +14,9 @@ use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\HttpKernel\DependencyInjection\Extension;
 use Symfony\Component\Yaml\Yaml;
 
-final class IsgFrameworkExtension extends Extension implements PrependExtensionInterface
+final class CmFrameworkExtension extends Extension implements PrependExtensionInterface
 {
-    private ?array $isgBundles = [];
+    private ?array $bundles = [];
 
     /**
      * @param array $configs
@@ -43,7 +43,7 @@ final class IsgFrameworkExtension extends Extension implements PrependExtensionI
      */
     public function prepend(ContainerBuilder $container)
     {
-        $this->isgBundles = $this->findIsgBundles($container->getParameter('kernel.bundles'));
+        $this->bundles = $this->findBundles($container->getParameter('kernel.bundles'));
 
         $this->prependApiPlatformResourcesMapping($container);
         $this->prependFrameworkSerializerMapping($container);
@@ -51,12 +51,12 @@ final class IsgFrameworkExtension extends Extension implements PrependExtensionI
         $this->prependDoctrineOrmConfiguration($container);
     }
 
-    private function findIsgBundles(?array $bundles): array
+    private function findBundles(?array $bundles): array
     {
         return array_filter(
             $bundles,
             function ($alias) {
-                return (substr($alias, 0, 3) === 'Isg');
+                return (substr($alias, 0, 2) === 'Cm');
             },
             ARRAY_FILTER_USE_KEY
         );
@@ -75,7 +75,7 @@ final class IsgFrameworkExtension extends Extension implements PrependExtensionI
         $filesystem = new Filesystem();
         $currentConfig = $container->getExtensionConfig('doctrine')[0];
 
-        foreach ($this->isgBundles as $bundleClassName) {
+        foreach ($this->bundles as $bundleClassName) {
             $bundleDirectory = dirname($container->getReflectionClass($bundleClassName)->getFileName());
             $configResource = $bundleDirectory . '/Resources/config/doctrine.yaml';
             if ($filesystem->exists($configResource)) {
@@ -103,7 +103,7 @@ final class IsgFrameworkExtension extends Extension implements PrependExtensionI
         $filesystem = new Filesystem();
         $currentConfig = $container->getExtensionConfig('doctrine')[0];
 
-        foreach ($this->isgBundles as $bundleClassName) {
+        foreach ($this->bundles as $bundleClassName) {
             $bundleDirectory = dirname($container->getReflectionClass($bundleClassName)->getFileName());
             $configResource = $bundleDirectory . '/Resources/config/doctrine.yaml';
             if ($filesystem->exists($configResource)) {
@@ -140,7 +140,7 @@ final class IsgFrameworkExtension extends Extension implements PrependExtensionI
             $frameworkConfig[$configIndex]['serializer']['mapping']['paths'] = [];
         }
 
-        foreach ($this->isgBundles as $bundleClassName) {
+        foreach ($this->bundles as $bundleClassName) {
             $bundleDirectory = dirname($container->getReflectionClass($bundleClassName)->getFileName());
             $configResource = $bundleDirectory . '/Resources/config/api/serialization';
 
@@ -171,7 +171,7 @@ final class IsgFrameworkExtension extends Extension implements PrependExtensionI
         $apiConfig = $container->getExtensionConfig('api_platform');
         $apiMappingConfig = $apiConfig[0]['mapping'];
 
-        foreach ($this->isgBundles as $bundleClassName) {
+        foreach ($this->bundles as $bundleClassName) {
             $bundleDirectory = dirname($container->getReflectionClass($bundleClassName)->getFileName());
             $configResource = $bundleDirectory . '/Resources/config/api/resources';
             $entityResource = $bundleDirectory . '/Entity';
