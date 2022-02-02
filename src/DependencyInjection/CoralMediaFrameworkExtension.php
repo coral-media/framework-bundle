@@ -14,7 +14,7 @@ use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\HttpKernel\DependencyInjection\Extension;
 use Symfony\Component\Yaml\Yaml;
 
-final class CmFrameworkExtension extends Extension implements PrependExtensionInterface
+final class CoralMediaFrameworkExtension extends Extension implements PrependExtensionInterface
 {
     private ?array $bundles = [];
 
@@ -56,7 +56,7 @@ final class CmFrameworkExtension extends Extension implements PrependExtensionIn
         return array_filter(
             $bundles,
             function ($alias) {
-                return (substr($alias, 0, 2) === 'Cm');
+                return (substr($alias, 0, 10) === 'CoralMedia');
             },
             ARRAY_FILTER_USE_KEY
         );
