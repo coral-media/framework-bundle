@@ -7,3 +7,11 @@ Also holds the services container configuration, extensions and "glue" classes t
 ## How to install
 
 `composer require coral-media/framework-bundle`
+
+## Doctrine integration
+
+@todo
+
+## Api-Platform integration
+
+@todo
