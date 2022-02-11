@@ -2,6 +2,7 @@
     "name": "coral-media/framework-bundle",
     "description": "Framework Bundle to handle core code.",
     "license": "proprietary",
+    "version": "0.1.0",
     "authors": [
         {
             "name": "Rafael Ernesto Espinosa Santiesteban <@rernesto>",
