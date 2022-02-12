@@ -1,7 +1,7 @@
 {
     "name": "coral-media/framework-bundle",
     "description": "Framework Bundle to handle core code.",
-    "license": "proprietary",
+    "license": "MIT",
     "version": "0.1.0",
     "authors": [
         {
