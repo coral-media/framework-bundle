@@ -18,8 +18,9 @@ services:
         exclude:
             - '../../DependencyInjection/'
             - '../../Entity/'
-            - '../../FrameworkBundle.php'
+            - '../../CoralMediaFrameworkBundle.php'
             - '../../Tests/'
+            - '../../Resources'
 
     # controllers are imported separately to make sure services can be injected
     # as action arguments even if you don't extend any base controller class
@@ -29,18 +30,21 @@ services:
 
     # add more service definitions when explicit configuration is needed
     # please note that last definitions always *replace* previous ones
-    Symfony\Component\HttpFoundation\Session\Storage\Handler\PdoSessionHandler:
+
+    session.handler.pdo:
+        class: 'Symfony\Component\HttpFoundation\Session\Storage\Handler\PdoSessionHandler'
         arguments:
             - '%env(resolve:DATABASE_URL)%'
-    session.handler.pdo:
-        alias: 'Symfony\Component\HttpFoundation\Session\Storage\Handler\PdoSessionHandler'
-
-    CoralMedia\Component\HttpFoundation\Session\Storage\Proxy\EncryptedSessionProxy:
+    session.storage.file.proxy.encrypted:
+        class: 'CoralMedia\Component\HttpFoundation\Session\Storage\Proxy\EncryptedSessionProxy'
+        arguments:
+            - '@session.handler.native_file'
+            - '%env(resolve:SESSION_ENCRYPTION_KEY)%'
+    session.storage.pdo.proxy.encrypted:
+        class: 'CoralMedia\Component\HttpFoundation\Session\Storage\Proxy\EncryptedSessionProxy'
         arguments:
             - '@session.handler.pdo'
             - '%env(resolve:SESSION_ENCRYPTION_KEY)%'
-    session.storage.proxy.encrypted:
-        alias: 'CoralMedia\Component\HttpFoundation\Session\Storage\Proxy\EncryptedSessionProxy'
 
     CoralMedia\Component\Doctrine\Extensions\Ignorable\EventListener\PostGenerateSchemaListener:
         tags:
